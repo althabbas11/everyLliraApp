@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        tools:context=".ReportsActivity">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/app_logo"
+            app:srcCompat="@drawable/ic_launcher_foreground"
+            tools:ignore="ImageContrastCheck" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/imageView"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/every_lira_reports"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/yearlyReports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:layout_marginTop="30dp"
+            android:text="@string/yearlyReports"
+            android:textAllCaps="false"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/monthlyReports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/yearlyReports"
+            android:layout_marginTop="10dp"
+            android:text="@string/monthlyReports"
+            android:textAllCaps="false"
+            tools:ignore="TextContrastCheck" />
+
+
+        <Button
+            android:id="@+id/categoryReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/monthlyReports"
+            android:layout_marginTop="10dp"
+            android:text="@string/categoryReport"
+            android:textAllCaps="false"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/purchasedItemsReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/categoryReport"
+            android:layout_marginTop="10dp"
+            android:text="@string/purchasedItemsReport"
+            android:textAllCaps="false"
+            tools:ignore="TextContrastCheck" />
+
+
+        <Button
+            android:id="@+id/serviceReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/purchasedItemsReport"
+            android:layout_marginTop="10dp"
+            android:text="@string/servicesReport"
+            android:textAllCaps="false"
+            tools:ignore="TextContrastCheck" />
+
+
+
+
+
+
+
+
+    </RelativeLayout>
+</ScrollView>

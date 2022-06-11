@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">Every Lira</string>
+    <string name="next">Next</string>
+
+
+    <string name="app_logo">App Logo</string>
+    <string name="welcome">Welcome to Every Lira App 🙂\nBest app to track your expenses.</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="have_an_account">Already have an account? Sign in</string>
+    <string name="do_not_have_an_account">Don\'t have an account yet? Sign Up</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="item">Payee or item</string>
+    <string name="price">Price</string>
+    <string name="isService">A service</string>
+    <string name="item_description">Item Description</string>
+    <string name="category">Category</string>
+    <string name="categoryName">Category Name</string>
+    <string name="add_category">Add Category</string>
+    <string name="category_description">Category Description</string>
+    <string name="cancel">Cancel</string>
+    <string name="purchaseDate">Purchase Date</string>
+    <string name="purchase_description">Purchase Description</string>
+    <string name="fab">Add New Expense</string>
+    <string name="expense_cost">Expense cost:</string>
+    <string name="expense_date">Expense Date:</string>
+    <string name="expense_description">Expense Description:</string>
+    <string name="save">Save</string>
+    <string name="settings">Settings</string>
+    <string name="categories">Categories</string>
+    <string name="user_info">User Info</string>
+    <string name="reports">Reports</string>
+    <string name="expenses">Expenses</string>
+    <string name="manage_categories">Manage Categories:</string>
+    <string name="delete">Delete</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="every_lira_reports">Every Lira reports</string>
+    <string name="yearlyReports">Yearly Reports</string>
+    <string name="monthlyReports">Monthly Reports</string>
+    <string name="categoryReport">Specific Category Report</string>
+    <string name="purchasedItemsReport">Purchased Items Report</string>
+    <string name="servicesReport">Services Report</string>
+    <string name="about">About Us</string>
+    <string name="syp">SYP</string>
+    <string name="about_hw">BPM601 - F21 - HW\n\n
+        Dr.Muhammad Mazen Al-Mustafa\n\n
+        Participants:\n
+        hassan_125191\n
+        mhd_hussam_109817\n
+        omar_116205\n
+        samar_115286
+    </string>
+    <string name="keep_me_signed_in">Keep me signed in</string>
+    <string name="save_changes">Save changes</string>
+    <string name="update_credentials">Update Credentials</string>
+    <string name="new_password">Old or New password</string>
+    <string name="total_cost">Total Cost:</string>
+    <string name="chooseYear">Choose year:</string>
+    <string name="get_report">Get Report</string>
+    <string name="year">Year:</string>
+    <string name="month">Month</string>
+
+
+</resources>

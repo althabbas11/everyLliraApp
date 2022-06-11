@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        tools:context=".AddExpenseActivity">
+
+        <!-- Item Name -->
+        <EditText
+            android:id="@+id/itemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:autofillHints="name"
+            android:drawableStart="@drawable/item"
+            android:drawablePadding="10dp"
+            android:hint="@string/item"
+            android:inputType="text"
+            android:minHeight="48dp" />
+
+        <!-- Is service? -->
+        <CheckBox
+            android:id="@+id/isService"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/itemName"
+            android:layout_marginTop="20dp"
+            android:text="@string/isService"
+            android:textSize="16sp" />
+
+        <!-- Item Description -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/textField1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/item_description"
+            app:boxCornerRadiusBottomEnd="5dp"
+            android:layout_below="@+id/isService"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <EditText
+                android:id="@+id/itemDescription"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/isService"
+                android:gravity="top"
+                android:inputType="text|textMultiLine"
+                android:autofillHints="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/chooseCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textField1"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/category"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Spinner
+            android:id="@+id/categoriesSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textField1"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@id/chooseCategory" />
+
+        <Button
+            android:id="@+id/addNewCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textField1"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/categoriesSpinner"
+            android:text="@string/add_category" />
+
+
+        <!-- Item Price -->
+        <EditText
+            android:id="@+id/itemPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chooseCategory"
+            android:layout_marginTop="20dp"
+            android:autofillHints="password"
+            android:drawableStart="@drawable/price"
+            android:drawablePadding="10dp"
+            android:hint="@string/price"
+            android:inputType="numberDecimal"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/purchaseDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/itemPrice"
+            android:autofillHints="date"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:drawableStart="@drawable/date"
+            android:drawablePadding="10dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/purchaseDate"
+            android:inputType="date" />
+
+        <!-- Item Description -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/textField2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/purchase_description"
+            app:boxCornerRadiusBottomEnd="5dp"
+            android:layout_below="@+id/purchaseDate"
+            app:boxCornerRadiusBottomStart="5dp"
+            app:boxCornerRadiusTopEnd="5dp"
+            app:boxCornerRadiusTopStart="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <EditText
+                android:id="@+id/purchaseDescription"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="top"
+                android:inputType="text|textMultiLine"
+                android:autofillHints="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/addExpenseBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textField2"
+            android:layout_marginTop="30dp"
+            android:text="@string/add_expense"
+            tools:ignore="TextContrastCheck" />
+
+        <!-- Delete Button -->
+        <Button
+            android:id="@+id/deleteExpenseBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addExpenseBtn"
+            android:layout_marginTop="10dp"
+            android:text="Delete"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/deleteExpenseBtn"
+            android:layout_marginTop="10dp"
+            android:text="@string/cancel"
+            tools:ignore="TextContrastCheck" />
+
+    </RelativeLayout>
+</ScrollView>

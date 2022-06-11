@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/categories"
+        android:title="@string/categories"
+        android:icon="@drawable/category"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/userInfo"
+        android:title="@string/user_info"
+        android:icon="@drawable/person"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/reports"
+        android:title="@string/reports"
+        android:icon="@drawable/report"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/addExpense"
+        android:title="@string/add_expense"
+        android:icon="@drawable/add_blue"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/signOut"
+        android:title="@string/sign_out"
+        android:icon="@drawable/sign_out"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/about"
+        android:title="@string/about"
+        android:icon="@drawable/about"
+        app:showAsAction="never" />
+
+
+
+
+</menu>
