@@ -17,9 +17,9 @@
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
-            android:foregroundGravity="center"
             android:layout_marginTop="10dp"
             android:contentDescription="@string/app_logo"
+            android:foregroundGravity="center"
             app:srcCompat="@drawable/svu_logo"
             tools:ignore="ImageContrastCheck" />
 

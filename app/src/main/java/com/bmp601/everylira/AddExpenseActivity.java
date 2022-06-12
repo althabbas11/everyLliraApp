@@ -169,6 +169,20 @@ public class AddExpenseActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (categoriesSpinner.getSelectedItem().toString().trim().equalsIgnoreCase("")) {
+                    Toast.makeText(getBaseContext(), "Please choose a category", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (currentExpenseDate.trim().equalsIgnoreCase("")) {
+                    Toast.makeText(getBaseContext(), "Please specify purchase date", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+
+
+
+
                 // insert a record
                 if (mode.trim().equalsIgnoreCase("add")) {
                     ContentValues itemValues = new ContentValues();
@@ -329,11 +343,4 @@ public class AddExpenseActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
 }

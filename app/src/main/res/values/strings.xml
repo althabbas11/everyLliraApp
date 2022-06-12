@@ -38,6 +38,7 @@
     <string name="delete">Delete</string>
     <string name="sign_out">Sign Out</string>
     <string name="every_lira_reports">Every Lira reports</string>
+    <string name="noExpenses">No Expenses Found</string>
     <string name="yearlyReports">Yearly Reports</string>
     <string name="monthlyReports">Monthly Reports</string>
     <string name="categoryReport">Specific Category Report</string>
@@ -62,6 +63,7 @@
     <string name="get_report">Get Report</string>
     <string name="year">Year:</string>
     <string name="month">Month</string>
+    <string name="noExpensesAdded">No Expenses Added</string>
 
 
 </resources>

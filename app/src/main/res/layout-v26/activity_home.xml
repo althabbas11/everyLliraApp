@@ -9,7 +9,7 @@
         android:id="@+id/expensesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true" >
+        android:layout_alignParentStart="true">
 
     </ListView>
 
@@ -22,24 +22,24 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
-        android:textStyle="bold"
-        android:textSize="22sp"
         android:text="@string/syp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:visibility="gone"/>
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
+        android:layout_below="@id/noExpenses"
         android:layout_centerInParent="true"
         android:contentDescription="@string/app_logo"
         android:foregroundGravity="center"
-        android:layout_below="@id/noExpenses"
+        android:visibility="gone"
         app:srcCompat="@drawable/receipt"
-        tools:ignore="ImageContrastCheck"
-        android:visibility="gone"/>
+        tools:ignore="ImageContrastCheck" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -53,9 +53,9 @@
         android:contentDescription="@string/add_expense"
         android:focusable="true"
         android:tint="@android:color/white"
+        android:tooltipText="@string/add_expense"
         app:srcCompat="@drawable/add"
-        app:tint="@android:color/white"
-        android:tooltipText="@string/add_expense"/>
+        app:tint="@android:color/white" />
 
 
 </RelativeLayout>

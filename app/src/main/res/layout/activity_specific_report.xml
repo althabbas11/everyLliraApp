@@ -8,10 +8,22 @@
     tools:context=".SpecificReportActivity">
 
     <TextView
+        android:id="@+id/reportName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/year"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_below="@id/reportName"
         android:text="@string/year"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold"
@@ -21,6 +33,7 @@
         android:id="@+id/yearsSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/reportName"
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@id/year"
         android:contentDescription="@string/year"
@@ -32,6 +45,7 @@
         android:id="@+id/month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/reportName"
         android:layout_marginStart="10dp"
         android:layout_toEndOf="@id/yearsSpinner"
         android:text="@string/month"
@@ -43,6 +57,7 @@
         android:id="@+id/monthsSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/reportName"
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@id/month"
         android:visibility="gone"
@@ -96,6 +111,24 @@
         android:layout_marginEnd="10dp"
         android:text="@string/syp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+    <TextView
+        android:id="@+id/noExpenses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/currency"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:text="@string/syp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone"/>
+
+
 </RelativeLayout>
 
 

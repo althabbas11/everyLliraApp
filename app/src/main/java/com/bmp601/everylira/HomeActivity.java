@@ -14,8 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +32,8 @@ public class HomeActivity extends AppCompatActivity implements
     private SimpleCursorAdapter dataAdapter;
 
     boolean logOut = false;
+    TextView noExpenses;
+    ImageView imageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,9 @@ public class HomeActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_home);
 
         dbHelper = new MyDatabaseHelper(getBaseContext());
+
+        noExpenses = findViewById(R.id.noExpenses);
+        imageView = findViewById(R.id.imageView);
 
         displayListView();
 
@@ -128,6 +136,7 @@ public class HomeActivity extends AppCompatActivity implements
         CursorLoader cursorLoader = new CursorLoader(this,
                 ExpensesContentProvider.EXPENSES_ITEMS_URI, projection, null, null, null);
 
+
         Log.w("worked", "YES");
 
 //        String query = "SELECT Expenses.price, Items.name FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id";
@@ -140,6 +149,15 @@ public class HomeActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
+
+        if (data.getCount() == 0){
+            noExpenses.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+            noExpenses.setText(R.string.noExpensesAdded);
+        } else {
+            noExpenses.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
+        }
         dataAdapter.swapCursor(data);
     }
 

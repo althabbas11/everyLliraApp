@@ -34,7 +34,7 @@ public class SpecificReportActivity extends AppCompatActivity {
     private SimpleCursorAdapter dataAdapter;
     private String kindOfReport;
     Uri reportUri;
-    TextView year, month, totalCost, totalCostTextView, currency;
+    TextView noExpenses, reportName, year, month, totalCost, totalCostTextView, currency;
     Spinner yearsSpinner, monthsSpinner;
     Button getReport;
 
@@ -49,6 +49,8 @@ public class SpecificReportActivity extends AppCompatActivity {
         String[] from = new String[]{ExpensesDB.ITEMS_KEY_NAME, ExpensesDB.CATEGORIES_KEY_NAME, ExpensesDB.EXPENSES_KEY_PRICE, ExpensesDB.EXPENSES_KEY_DATE};
         int[] to = new int[]{R.id.expenseItemName, R.id.expenseCategoryName, R.id.expensePrice, R.id.expenseDate};
 
+        noExpenses = findViewById(R.id.noExpenses);
+        reportName = findViewById(R.id.reportName);
         year = findViewById(R.id.year);
         month = findViewById(R.id.month);
         totalCost = findViewById(R.id.totalCost);
@@ -65,6 +67,9 @@ public class SpecificReportActivity extends AppCompatActivity {
 
         if (kindOfReport.trim().equalsIgnoreCase("yearlyReports")) {
 
+            reportName.setText(R.string.yearlyReports);
+            reportName.setVisibility(View.VISIBLE);
+
             year.setVisibility(View.VISIBLE);
             totalCost.setVisibility(View.GONE);
             totalCostTextView.setVisibility(View.GONE);
@@ -74,14 +79,14 @@ public class SpecificReportActivity extends AppCompatActivity {
 
             ArrayList<String> years = new ArrayList<String>();
             int thisYear = Calendar.getInstance().get(Calendar.YEAR);
-            for (int i = 1900; i <= thisYear; i++) {
+            for (int i = 1990; i <= thisYear; i++) {
                 years.add(Integer.toString(i));
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, years);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
             yearsSpinner.setAdapter(adapter);
-            yearsSpinner.setSelection(thisYear - 1900);
+            yearsSpinner.setSelection(thisYear - 1990);
 
             getReport.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,6 +107,12 @@ public class SpecificReportActivity extends AppCompatActivity {
 
                     Cursor cursor = getContentResolver().query(ExpensesContentProvider.EXPENSES_YEAR_URI, null, null, args, null);
 
+                    if (cursor.getCount() == 0){
+                        noExpenses.setVisibility(View.VISIBLE);
+                        noExpenses.setText(R.string.noExpenses);
+                    } else
+                        noExpenses.setVisibility(View.GONE);
+
                     Log.w("Cursor", String.valueOf(cursor.getCount()));
 
 
@@ -119,6 +130,9 @@ public class SpecificReportActivity extends AppCompatActivity {
         }
 
         if (kindOfReport.trim().equalsIgnoreCase("monthlyReports")) {
+
+            reportName.setText(R.string.monthlyReports);
+            reportName.setVisibility(View.VISIBLE);
 
             year.setVisibility(View.VISIBLE);
             month.setVisibility(View.VISIBLE);
@@ -171,6 +185,12 @@ public class SpecificReportActivity extends AppCompatActivity {
 
                     Cursor cursor = getContentResolver().query(ExpensesContentProvider.EXPENSES_MONTH_URI, null, null, args, null);
 
+                    if (cursor.getCount() == 0){
+                        noExpenses.setVisibility(View.VISIBLE);
+                        noExpenses.setText(R.string.noExpenses);
+                    } else
+                        noExpenses.setVisibility(View.GONE);
+
                     Log.w("Cursor", String.valueOf(cursor.getCount()));
 
 
@@ -189,6 +209,9 @@ public class SpecificReportActivity extends AppCompatActivity {
 
         if (kindOfReport.trim().equalsIgnoreCase("categoryReport")) {
             year.setText(R.string.category);
+
+            reportName.setText(R.string.categoryReport);
+            reportName.setVisibility(View.VISIBLE);
 
             year.setVisibility(View.VISIBLE);
             totalCost.setVisibility(View.GONE);
@@ -232,6 +255,12 @@ public class SpecificReportActivity extends AppCompatActivity {
 
                     Cursor cursor = getContentResolver().query(ExpensesContentProvider.EXPENSES_CATEGORY_REPORT_URI, null, null, args, null);
 
+                    if (cursor.getCount() == 0){
+                        noExpenses.setVisibility(View.VISIBLE);
+                        noExpenses.setText(R.string.noExpenses);
+                    } else
+                        noExpenses.setVisibility(View.GONE);
+
                     Log.w("Cursor", String.valueOf(cursor.getCount()));
 
 
@@ -248,6 +277,10 @@ public class SpecificReportActivity extends AppCompatActivity {
         }
 
         if (kindOfReport.trim().equalsIgnoreCase("purchasedItemsReport")) {
+
+            reportName.setText(R.string.purchasedItemsReport);
+            reportName.setVisibility(View.VISIBLE);
+
             reportUri = ExpensesContentProvider.EXPENSES_PAID_REPORT_URI;
             Cursor c = getContentResolver().query(ExpensesContentProvider.EXPENSES_PAID_COST_URI, null, null, null, null);
             c.moveToFirst();
@@ -255,6 +288,11 @@ public class SpecificReportActivity extends AppCompatActivity {
 
             Cursor cursor = getContentResolver().query(ExpensesContentProvider.EXPENSES_PAID_REPORT_URI, null, null, null, null);
 
+            if (cursor.getCount() == 0){
+                noExpenses.setVisibility(View.VISIBLE);
+                noExpenses.setText(R.string.noExpenses);
+            } else
+                noExpenses.setVisibility(View.GONE);
 
             SimpleCursorAdapter dataAdapter;
             dataAdapter = new SimpleCursorAdapter(this, R.layout.expense_info, cursor, from, to, 0);
@@ -263,11 +301,21 @@ public class SpecificReportActivity extends AppCompatActivity {
         }
 
         if (kindOfReport.trim().equalsIgnoreCase("serviceReport")) {
+
+            reportName.setText(R.string.servicesReport);
+            reportName.setVisibility(View.VISIBLE);
+
             reportUri = ExpensesContentProvider.EXPENSES_SERVICES_REPORT_URI;
             Cursor c = getContentResolver().query(ExpensesContentProvider.EXPENSES_SERVICES_COST_URI, null, null, null, null);
             c.moveToFirst();
             totalCost.setText(c.getString(c.getColumnIndexOrThrow("Total")));
             Cursor cursor = getContentResolver().query(ExpensesContentProvider.EXPENSES_SERVICES_REPORT_URI, null, null, null, null);
+
+            if (cursor.getCount() == 0){
+                noExpenses.setVisibility(View.VISIBLE);
+                noExpenses.setText(R.string.noExpenses);
+            } else
+                noExpenses.setVisibility(View.GONE);
 
             SimpleCursorAdapter dataAdapter;
             dataAdapter = new SimpleCursorAdapter(this, R.layout.expense_info, cursor, from, to, 0);
