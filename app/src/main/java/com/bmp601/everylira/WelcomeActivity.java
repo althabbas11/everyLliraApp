@@ -8,10 +8,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
+// WelcomeActivity will first check if a user is already logged in
+// If so, it will navigate to the HomeActivity
 public class WelcomeActivity extends AppCompatActivity {
 
+    // Declaring variables
     Button signInButton, signUpButton;
 
     @Override
@@ -19,13 +21,15 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        signInButton = findViewById(R.id.sign_in_btn);
-        signUpButton = findViewById(R.id.sign_up_btn);
+        // Assigning variables
+        signInButton = findViewById(R.id.signInBtn);
+        signUpButton = findViewById(R.id.signUpBtn);
 
-
+        // Handling clicks on each button
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Navigate to SignInActivity, and finish the current activity
                 Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(intent);
                 finish();
@@ -36,6 +40,7 @@ public class WelcomeActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Navigate to SignUpActivity, and finish the current activity
                 Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
                 startActivity(intent);
                 finish();
@@ -47,6 +52,8 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        // Checking a SharedPreferences value keepSignedIn
+        // If set to true, the user will be navigated to HomeActivity
         SharedPreferences sharedPreferences = getSharedPreferences("everyLiraSP", Context.MODE_PRIVATE);
         boolean isSignedIn = sharedPreferences.getBoolean("keepSignedIn", false);
         if (isSignedIn) {

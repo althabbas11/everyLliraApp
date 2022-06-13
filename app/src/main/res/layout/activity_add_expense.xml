@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    tools:context=".AddExpenseActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -11,15 +12,29 @@
         android:padding="10dp"
         tools:context=".AddExpenseActivity">
 
+        <!-- Add Expense textView -->
+        <TextView
+            android:id="@+id/addExpenseTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/add_expense"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
         <!-- Item Name -->
         <EditText
             android:id="@+id/itemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:autofillHints="name"
             android:drawableStart="@drawable/item"
             android:drawablePadding="10dp"
+            android:layout_below="@id/addExpenseTextView"
             android:hint="@string/item"
             android:inputType="text"
             android:minHeight="48dp" />
@@ -36,30 +51,32 @@
 
         <!-- Item Description -->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/textField1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/isService"
             android:layout_marginTop="20dp"
             android:hint="@string/item_description"
             app:boxCornerRadiusBottomEnd="5dp"
-            android:layout_below="@+id/isService"
             app:boxCornerRadiusBottomStart="5dp"
             app:boxCornerRadiusTopEnd="5dp"
             app:boxCornerRadiusTopStart="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <EditText
                 android:id="@+id/itemDescription"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_below="@+id/isService"
+                android:autofillHints="text"
                 android:gravity="top"
-                android:inputType="text|textMultiLine"
-                android:autofillHints="text" />
+                android:inputType="text|textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Choose category textView -->
         <TextView
             android:id="@+id/chooseCategory"
             android:layout_width="wrap_content"
@@ -70,6 +87,7 @@
             android:text="@string/category"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
+        <!-- Categories Spinner -->
         <Spinner
             android:id="@+id/categoriesSpinner"
             android:layout_width="wrap_content"
@@ -78,6 +96,7 @@
             android:layout_marginTop="20dp"
             android:layout_toEndOf="@id/chooseCategory" />
 
+        <!-- Categories Spinner -->
         <Button
             android:id="@+id/addNewCategory"
             android:layout_width="wrap_content"
@@ -117,32 +136,33 @@
             android:hint="@string/purchaseDate"
             android:inputType="date" />
 
-        <!-- Item Description -->
+        <!-- Purchase Description -->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/textField2"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/purchaseDate"
             android:layout_marginTop="20dp"
             android:hint="@string/purchase_description"
             app:boxCornerRadiusBottomEnd="5dp"
-            android:layout_below="@+id/purchaseDate"
             app:boxCornerRadiusBottomStart="5dp"
             app:boxCornerRadiusTopEnd="5dp"
             app:boxCornerRadiusTopStart="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <EditText
                 android:id="@+id/purchaseDescription"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:autofillHints="text"
                 android:gravity="top"
-                android:inputType="text|textMultiLine"
-                android:autofillHints="text" />
+                android:inputType="text|textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Save Button -->
+        <!-- Add/Save Button -->
         <Button
             android:id="@+id/addExpenseBtn"
             android:layout_width="match_parent"
@@ -159,7 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/addExpenseBtn"
             android:layout_marginTop="10dp"
-            android:text="Delete"
+            android:text="@string/delete"
             tools:ignore="TextContrastCheck" />
 
         <Button
@@ -170,6 +190,5 @@
             android:layout_marginTop="10dp"
             android:text="@string/cancel"
             tools:ignore="TextContrastCheck" />
-
     </RelativeLayout>
 </ScrollView>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
@@ -13,8 +12,9 @@
         android:padding="10dp"
         tools:context=".SignInActivity">
 
+        <!-- App Logo -->
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/signInAppIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
@@ -22,17 +22,31 @@
             app:srcCompat="@drawable/ic_launcher_foreground"
             tools:ignore="ImageContrastCheck" />
 
+        <!-- Sign in textView -->
+        <TextView
+            android:id="@+id/signInTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/signInAppIcon"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/sign_in_to_every_lira"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <!-- Username input -->
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="140dp"
+            android:layout_below="@id/signInTextView"
             android:autofillHints="username"
             android:drawableStart="@drawable/person"
             android:hint="@string/username"
             android:inputType="text"
             android:minHeight="48dp" />
 
+        <!-- Password input -->
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
@@ -45,6 +59,7 @@
             android:inputType="textPassword"
             android:minHeight="48dp" />
 
+        <!-- keepMeSignIn checkbox -->
         <CheckBox
             android:id="@+id/keepSignedIn"
             android:layout_width="wrap_content"
@@ -52,8 +67,9 @@
             android:layout_below="@+id/password"
             android:text="@string/keep_me_signed_in" />
 
+        <!-- Sign In button -->
         <Button
-            android:id="@+id/sign_in_btn"
+            android:id="@+id/signInBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/keepSignedIn"
@@ -61,16 +77,15 @@
             android:text="@string/sign_in"
             tools:ignore="TextContrastCheck" />
 
+        <!-- Sign Up button -->
         <Button
-            android:id="@+id/sign_up_btn"
+            android:id="@+id/signUpBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/sign_in_btn"
+            android:layout_below="@+id/signInBtn"
             android:layout_marginTop="20dp"
             android:text="@string/do_not_have_an_account"
             android:textAllCaps="false"
             tools:ignore="TextContrastCheck" />
-
-
     </RelativeLayout>
 </ScrollView>

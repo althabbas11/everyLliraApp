@@ -1,57 +1,65 @@
 package com.bmp601.everylira;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
+// https://www.androiddesignpatterns.com/2012/07/understanding-loadermanager.html
+// A LoaderManager is used in order to keep track of the categories listview
+// After adding/deleting/editing a category
 public class CategoriesActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
-    private SimpleCursorAdapter dataAdapter;
+    // Declaring variables
     Button addCategory;
+    ListView categoriesList;
+    private SimpleCursorAdapter dataAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
 
+        // To show the navigate up arrow in the action bar
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        // Initializing variables
         addCategory = findViewById(R.id.addCategory);
+        categoriesList = findViewById(R.id.categoriesList);
 
-        displayListView();
+        displayCategoriesListView();
 
+        // Handle click on the addCategory button
         addCategory.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent addCategory = new Intent(getBaseContext(), AddCategoryActivity.class);
+                // Set mode to "add" when navigating to AddCategoryActivity
                 Bundle bundle = new Bundle();
                 bundle.putString("mode", "add");
                 addCategory.putExtras(bundle);
+
                 startActivity(addCategory);
             }
         });
 
     }
 
+    // TODO: Elaborate more
     @Override
     protected void onResume() {
         super.onResume();
@@ -59,14 +67,14 @@ public class CategoriesActivity extends AppCompatActivity implements
         getLoaderManager().restartLoader(0, null, this);
     }
 
-    private void displayListView() {
-        // The desired columns to be bound
-        String[] columns = new String[]{
+    private void displayCategoriesListView() {
+        // Columns to display
+        String[] from = new String[]{
                 ExpensesDB.CATEGORIES_KEY_NAME,
                 ExpensesDB.CATEGORIES_KEY_DESCRIPTION,
         };
 
-        // the XML defined views which the data will be bound to
+        // The XML defined views which the data will be bound to
         int[] to = new int[]{
                 R.id.categoryName,
                 R.id.categoryDescription,
@@ -77,46 +85,43 @@ public class CategoriesActivity extends AppCompatActivity implements
                 this,
                 R.layout.category_info,
                 null,
-                columns,
+                from,
                 to,
                 0);
 
-        // get reference to the ListView
-        ListView listView = (ListView) findViewById(R.id.categoriesList);
         // Assign adapter to ListView
-        listView.setAdapter(dataAdapter);
-        //Ensures a loader is initialized and active.
+        categoriesList.setAdapter(dataAdapter);
+        // Ensures a loader is initialized and active.
         getLoaderManager().initLoader(0, null, this);
 
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Handling clicks on the listview items
+        categoriesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> listView, View view,
                                     int position, long id) {
-                // Get the cursor, positioned to the corresponding row in the result set
+                // Get the cursor indexed to the corresponding row
                 Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
-                // display the selected country
-                String countryCode =
-                        cursor.getString(cursor.getColumnIndexOrThrow(ExpensesDB.CATEGORIES_KEY_DESCRIPTION));
-                Toast.makeText(getApplicationContext(),
-                        countryCode, Toast.LENGTH_SHORT).show();
-
+                // Get the id of the selected listview item
                 String rowId =
                         cursor.getString(cursor.getColumnIndexOrThrow(ExpensesDB.CATEGORIES_KEY_ID));
 
-                // starts a new Intent to update/delete a Country
-                // pass in row Id to create the Content URI for a single row
+                // Start a new intent to update or delete a category
+                // pass the rowId to create the Content URI for a single row
                 Intent editCategory = new Intent(getBaseContext(), AddCategoryActivity.class);
+
+                // Set mode to update
                 Bundle bundle = new Bundle();
                 bundle.putString("mode", "update");
                 bundle.putString("rowId", rowId);
                 editCategory.putExtras(bundle);
+
                 startActivity(editCategory);
             }
         });
     }
 
+    // TODO: Elaborate more
     // This is called when a new Loader needs to be created.
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -127,9 +132,11 @@ public class CategoriesActivity extends AppCompatActivity implements
         };
         CursorLoader cursorLoader = new CursorLoader(this,
                 CategoriesContentProvider.CATEGORIES_URI, projection, null, null, null);
+
         return cursorLoader;
     }
 
+    // TODO: Elaborate more
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Swap the new cursor in.  (The framework will take care of closing the
@@ -137,6 +144,7 @@ public class CategoriesActivity extends AppCompatActivity implements
         dataAdapter.swapCursor(data);
     }
 
+    // TODO: Elaborate more
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // This is called when the last Cursor provided to onLoadFinished()
@@ -145,15 +153,14 @@ public class CategoriesActivity extends AppCompatActivity implements
         dataAdapter.swapCursor(null);
     }
 
-
+    // To specify what the navigate up arrow in the action bar does
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
 }

@@ -13,8 +13,9 @@
         android:padding="10dp"
         tools:context=".AboutActivity">
 
+        <!-- SVU Logo Imageview -->
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/svuLogo"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
             android:layout_marginTop="10dp"
@@ -23,18 +24,17 @@
             app:srcCompat="@drawable/svu_logo"
             tools:ignore="ImageContrastCheck" />
 
+        <!-- Project Info TextView -->
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/projectInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/imageView"
+            android:layout_below="@+id/svuLogo"
             android:layout_marginTop="40dp"
             android:gravity="center"
             android:text="@string/about_hw"
+            android:textColor="@color/white"
             android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
-
-
+            android:textStyle="bold" />
     </RelativeLayout>
 </ScrollView>

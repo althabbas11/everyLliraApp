@@ -155,7 +155,7 @@ public class ExpensesContentProvider extends ContentProvider {
                 //do nothing
                 break;
             case ALL_EXPENSES_ITEMS:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id";
+                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id ORDER BY Expenses.date ASC";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
             case ALL_EXPENSES_SERVICES_REPORT:

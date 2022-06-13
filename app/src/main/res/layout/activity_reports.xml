@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
@@ -13,8 +12,9 @@
         android:padding="10dp"
         tools:context=".ReportsActivity">
 
+        <!-- App Logo imageview-->
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/appLogoImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
@@ -22,27 +22,30 @@
             app:srcCompat="@drawable/ic_launcher_foreground"
             tools:ignore="ImageContrastCheck" />
 
+        <!-- Every Lira TextView-->
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/everyLiraTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/imageView"
+            android:layout_below="@+id/appLogoImageView"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="@string/every_lira_reports"
             android:textSize="18sp"
             android:textStyle="bold" />
 
+        <!-- Yearly Reports-->
         <Button
             android:id="@+id/yearlyReports"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/everyLiraTextView"
             android:layout_marginTop="30dp"
             android:text="@string/yearlyReports"
             android:textAllCaps="false"
             tools:ignore="TextContrastCheck" />
 
+        <!-- Monthly Reports-->
         <Button
             android:id="@+id/monthlyReports"
             android:layout_width="match_parent"
@@ -53,7 +56,7 @@
             android:textAllCaps="false"
             tools:ignore="TextContrastCheck" />
 
-
+        <!-- Category Reports-->
         <Button
             android:id="@+id/categoryReport"
             android:layout_width="match_parent"
@@ -64,6 +67,7 @@
             android:textAllCaps="false"
             tools:ignore="TextContrastCheck" />
 
+        <!-- Purchased Items Reports-->
         <Button
             android:id="@+id/purchasedItemsReport"
             android:layout_width="match_parent"
@@ -74,7 +78,7 @@
             android:textAllCaps="false"
             tools:ignore="TextContrastCheck" />
 
-
+        <!-- Services Reports-->
         <Button
             android:id="@+id/serviceReport"
             android:layout_width="match_parent"
@@ -84,13 +88,5 @@
             android:text="@string/servicesReport"
             android:textAllCaps="false"
             tools:ignore="TextContrastCheck" />
-
-
-
-
-
-
-
-
     </RelativeLayout>
 </ScrollView>

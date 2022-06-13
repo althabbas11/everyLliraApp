@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
@@ -13,18 +12,21 @@
         android:padding="10dp"
         tools:context=".AddCategoryActivity">
 
+        <!-- Add Category TextView -->
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/addCategoryTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/categoryName"
-            android:textSize="20sp" />
+            android:text="@string/add_category"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
+        <!-- Category name EditText -->
         <EditText
             android:id="@+id/categoryName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/addCategoryTextView"
             android:layout_marginTop="10dp"
             android:autofillHints="username"
             android:drawableStart="@drawable/category"
@@ -33,30 +35,31 @@
             android:inputType="text"
             android:minHeight="48dp" />
 
-        <!-- Item Description -->
+        <!-- Category Description -->
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/textField1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/categoryName"
             android:layout_marginTop="20dp"
             android:hint="@string/category_description"
             app:boxCornerRadiusBottomEnd="5dp"
-            android:layout_below="@+id/categoryName"
             app:boxCornerRadiusBottomStart="5dp"
             app:boxCornerRadiusTopEnd="5dp"
             app:boxCornerRadiusTopStart="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <EditText
                 android:id="@+id/categoryDescription"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_below="@+id/isService"
+                android:autofillHints="text"
                 android:gravity="top"
-                android:inputType="text|textMultiLine"
-                android:autofillHints="text" />
+                android:inputType="text|textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -78,6 +81,7 @@
             android:text="@string/delete"
             tools:ignore="TextContrastCheck" />
 
+        <!-- Cancel Button -->
         <Button
             android:id="@+id/cancel"
             android:layout_width="match_parent"

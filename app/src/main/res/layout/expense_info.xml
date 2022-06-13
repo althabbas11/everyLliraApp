@@ -21,13 +21,13 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/expenseItemName"
         android:layout_alignBottom="@+id/expenseItemName"
-        android:layout_toStartOf="@+id/textView"
+        android:layout_toStartOf="@+id/welcomeTextView"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/red" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -54,10 +54,5 @@
         android:layout_alignParentEnd="true"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-
-
-
-
 
 </RelativeLayout>

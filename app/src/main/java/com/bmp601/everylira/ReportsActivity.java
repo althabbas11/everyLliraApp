@@ -1,5 +1,6 @@
 package com.bmp601.everylira;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -13,6 +14,7 @@ import java.util.Objects;
 
 public class ReportsActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // Declaring variables
     Button yearlyReports, monthlyReports, categoryReport, purchasedItemsReport, serviceReport;
 
     @Override
@@ -21,9 +23,12 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reports);
 
+        // To show the navigate up arrow in the action bar
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        // Initializing variables
+        // All buttons will be setOnClickListener
         yearlyReports = findViewById(R.id.yearlyReports);
         yearlyReports.setOnClickListener(this);
 
@@ -38,11 +43,11 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
 
         serviceReport = findViewById(R.id.serviceReport);
         serviceReport.setOnClickListener(this);
-
     }
 
+    // Each button view will navigate to the same activity but with different bundle data (kindOfReport)
     @SuppressLint("NonConstantResourceId")
-    public void onClick(View v) {
+    public void onClick(@NonNull View v) {
         Intent intent = new Intent(getApplicationContext(), SpecificReportActivity.class);
         Bundle bundle;
         switch (v.getId()) {
@@ -79,8 +84,9 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    // To specify what the navigate up arrow in the action bar does
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
         }

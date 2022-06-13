@@ -12,8 +12,9 @@
         android:padding="10dp"
         tools:context=".SignUpActivity">
 
+        <!-- App Logo -->
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/signUpAppIcon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
@@ -21,22 +22,36 @@
             app:srcCompat="@drawable/ic_launcher_foreground"
             tools:ignore="ImageContrastCheck" />
 
+        <!-- Sign Up textView-->
+        <TextView
+            android:id="@+id/signUpTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/signUpAppIcon"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/sign_up_to_every_lira"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <!-- Username input -->
         <EditText
-            android:id="@+id/itemName"
+            android:id="@+id/signUpUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="140dp"
+            android:layout_below="@id/signUpTextView"
             android:autofillHints="username"
             android:drawableStart="@drawable/person"
             android:hint="@string/username"
             android:inputType="text"
             android:minHeight="48dp" />
 
+        <!-- Password input -->
         <EditText
-            android:id="@+id/itemPrice"
+            android:id="@+id/signUpPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/itemName"
+            android:layout_below="@+id/signUpUsername"
             android:layout_marginTop="20dp"
             android:autofillHints="password"
             android:drawableStart="@drawable/lock"
@@ -44,11 +59,12 @@
             android:inputType="textPassword"
             android:minHeight="48dp" />
 
+        <!-- Confirm password input  -->
         <EditText
-            android:id="@+id/password_confirmation"
+            android:id="@+id/signUpPasswordConfirmation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/itemPrice"
+            android:layout_below="@+id/signUpPassword"
             android:layout_marginTop="20dp"
             android:autofillHints="password"
             android:drawableStart="@drawable/lock"
@@ -57,16 +73,17 @@
             android:minHeight="48dp"
             tools:ignore="TextContrastCheck" />
 
-
+        <!-- keepMeSignIn checkbox -->
         <CheckBox
             android:id="@+id/keepSignedIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/password_confirmation"
+            android:layout_below="@+id/signUpPasswordConfirmation"
             android:text="@string/keep_me_signed_in" />
 
+        <!-- Sign Up button -->
         <Button
-            android:id="@+id/sign_up_btn"
+            android:id="@+id/signUpBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/keepSignedIn"
@@ -74,11 +91,12 @@
             android:text="@string/sign_up"
             tools:ignore="TextContrastCheck" />
 
+        <!-- Sign In button -->
         <Button
-            android:id="@+id/sign_in_btn"
+            android:id="@+id/signInBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/sign_up_btn"
+            android:layout_below="@+id/signUpBtn"
             android:layout_marginTop="20dp"
             android:text="@string/have_an_account"
             android:textAllCaps="false"

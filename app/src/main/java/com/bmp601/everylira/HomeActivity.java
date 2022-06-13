@@ -9,57 +9,71 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+// TODO: Create another listview for uncategorized expenses
+
+// https://www.androiddesignpatterns.com/2012/07/understanding-loadermanager.html
+// A LoaderManager is used in order to keep track of the expense listview
+// After adding/deleting/editing an expense
 public class HomeActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
-    private MyDatabaseHelper dbHelper;
     private SimpleCursorAdapter dataAdapter;
 
+    // Declaring variables
     boolean logOut = false;
     TextView noExpenses;
-    ImageView imageView;
+    ImageView noExpensesImage;
+    ListView expensesList;
+    FloatingActionButton addExpenseFAB;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        dbHelper = new MyDatabaseHelper(getBaseContext());
 
+        // Assigning variables
         noExpenses = findViewById(R.id.noExpenses);
-        imageView = findViewById(R.id.imageView);
+        noExpensesImage = findViewById(R.id.noExpensesImage);
+        expensesList = findViewById(R.id.expensesList);
+        addExpenseFAB = findViewById(R.id.addExpenseFAB);
 
-        displayListView();
+        // Call displayExpensesList() to generate and show expenses listview
+        displayExpensesListView();
 
-        FloatingActionButton addExpense = findViewById(R.id.floatingActionButton);
-        addExpense.setOnClickListener(new View.OnClickListener() {
+        // Handle clicks on the FAB by navigating to AddExpenseActivity
+        addExpenseFAB.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent addExpense = new Intent(getBaseContext(), AddExpenseActivity.class);
+
+                // When navigating to AddExpenseActivity, a bundle is needed with "mode" entry
+                // in order to specify the kind of operation to be done (Add or Update)
                 Bundle bundle = new Bundle();
                 bundle.putString("mode", "add");
                 addExpense.putExtras(bundle);
+
                 startActivity(addExpense);
             }
         });
 
     }
 
+    // TODO: Elaborate more
     @Override
     protected void onResume() {
         super.onResume();
@@ -67,16 +81,16 @@ public class HomeActivity extends AppCompatActivity implements
         getLoaderManager().restartLoader(0, null, this);
     }
 
-    private void displayListView() {
-        // The desired columns to be bound
-        String[] columns = new String[]{
+    private void displayExpensesListView() {
+        // Columns to display
+        String[] from = new String[]{
                 ExpensesDB.EXPENSES_KEY_PRICE,
                 ExpensesDB.EXPENSES_KEY_DATE,
                 ExpensesDB.ITEMS_KEY_NAME,
                 ExpensesDB.CATEGORIES_KEY_NAME
         };
 
-        // the XML defined views which the data will be bound to
+        // The XML defined views which the data will be bound to
         int[] to = new int[]{
                 R.id.expensePrice,
                 R.id.expenseDate,
@@ -84,45 +98,48 @@ public class HomeActivity extends AppCompatActivity implements
                 R.id.expenseCategoryName,
         };
 
-        // create an adapter from the SimpleCursorAdapter
+        // XML views to be replaced by columns values (expenses_info.xml works LIKE a fragment, but it is not a fragment)
         dataAdapter = new SimpleCursorAdapter(
                 this,
                 R.layout.expense_info,
                 null,
-                columns,
+                from,
                 to,
                 0);
 
-        // get reference to the ListView
-        ListView listView = (ListView) findViewById(R.id.expensesList);
         // Assign adapter to ListView
-        listView.setAdapter(dataAdapter);
+        expensesList.setAdapter(dataAdapter);
         //Ensures a loader is initialized and active.
         getLoaderManager().initLoader(0, null, this);
 
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Handling clicks on the listview items
+        expensesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> listView, View view,
                                     int position, long id) {
-                // Get the cursor, positioned to the corresponding row in the result set
+                // Get the cursor indexed to the corresponding row
                 Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
+                // Get the id of the selected listview item
                 String rowId =
                         cursor.getString(cursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_ID));
 
-                // starts a new Intent to update/delete a Country
-                // pass in row Id to create the Content URI for a single row
+                // Start a new intent to update or delete an expense
+                // pass the rowId to create the Content URI for a single row
                 Intent editExpense = new Intent(getBaseContext(), AddExpenseActivity.class);
+
+                // Set mode to update
                 Bundle bundle = new Bundle();
                 bundle.putString("mode", "update");
                 bundle.putString("rowId", rowId);
                 editExpense.putExtras(bundle);
+
                 startActivity(editExpense);
             }
         });
     }
 
+    // TODO: Elaborate more
     // This is called when a new Loader needs to be created.
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -133,34 +150,34 @@ public class HomeActivity extends AppCompatActivity implements
                 ExpensesDB.ITEMS_KEY_NAME,
                 ExpensesDB.CATEGORIES_KEY_NAME
         };
+
+        // Sorted by date
         CursorLoader cursorLoader = new CursorLoader(this,
                 ExpensesContentProvider.EXPENSES_ITEMS_URI, projection, null, null, null);
-
-
-        Log.w("worked", "YES");
-
-//        String query = "SELECT Expenses.price, Items.name FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id";
-//        Cursor c = dbHelper.getWritableDatabase().rawQuery(query, null);
 
         return cursorLoader;
     }
 
+    // TODO: Elaborate more
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
 
-        if (data.getCount() == 0){
+        // If the cursor has no records, show the noExpenses textView and imageView
+        // Otherwise, hide them
+        if (data.getCount() == 0) {
             noExpenses.setVisibility(View.VISIBLE);
-            imageView.setVisibility(View.VISIBLE);
+            noExpensesImage.setVisibility(View.VISIBLE);
             noExpenses.setText(R.string.noExpensesAdded);
         } else {
             noExpenses.setVisibility(View.GONE);
-            imageView.setVisibility(View.GONE);
+            noExpensesImage.setVisibility(View.GONE);
         }
         dataAdapter.swapCursor(data);
     }
 
+    // TODO: Elaborate more
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         // This is called when the last Cursor provided to onLoadFinished()
@@ -169,6 +186,7 @@ public class HomeActivity extends AppCompatActivity implements
         dataAdapter.swapCursor(null);
     }
 
+    // Setting the menu options
     @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -180,9 +198,11 @@ public class HomeActivity extends AppCompatActivity implements
         return super.onCreateOptionsMenu(menu);
     }
 
+    // Handling clicks on each menu option
     @SuppressLint("NonConstantResourceId")
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Basically, each option will navigate to a new activity
         Intent intent;
         switch (item.getItemId()) {
             case R.id.categories:
@@ -205,6 +225,7 @@ public class HomeActivity extends AppCompatActivity implements
                 startActivity(intent);
                 return true;
             case R.id.signOut:
+                // Change the logOut value, in order to be saved using SharedPreferences
                 logOut = true;
                 intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                 startActivity(intent);
@@ -214,8 +235,6 @@ public class HomeActivity extends AppCompatActivity implements
                 intent = new Intent(getApplicationContext(), AboutActivity.class);
                 startActivity(intent);
                 return true;
-
-
             default:
                 return super.onContextItemSelected(item);
         }
@@ -224,14 +243,15 @@ public class HomeActivity extends AppCompatActivity implements
     @Override
     protected void onPause() {
         super.onPause();
+
+        // Create a SharedPreferences instance
         SharedPreferences sharedPreferences = getSharedPreferences("everyLiraSP", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        if (logOut)
-            editor.putBoolean("keepSignedIn", false);
+        // Updating the value of keepSignedIn
+        editor.putBoolean("keepSignedIn", !logOut);
 
-
+        // Store/apply
         editor.apply();
     }
-
 }

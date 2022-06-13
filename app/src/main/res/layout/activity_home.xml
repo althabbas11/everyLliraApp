@@ -3,16 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
 
+    <!-- Expenses ListView -->
     <ListView
         android:id="@+id/expensesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true" >
+        android:layout_alignParentStart="true">
 
     </ListView>
 
+    <!-- No Expense hidden textView -->
     <TextView
         android:id="@+id/noExpenses"
         android:layout_width="wrap_content"
@@ -22,27 +25,29 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
-        android:textStyle="bold"
-        android:textSize="22sp"
-        android:text="@string/syp"
+        android:text="@string/no_expenses"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:visibility="gone"/>
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
-
+    <!-- No Expenses image -->
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/noExpensesImage"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
+        android:layout_below="@id/noExpenses"
         android:layout_centerInParent="true"
         android:contentDescription="@string/app_logo"
+        android:layout_marginTop="20dp"
         android:foregroundGravity="center"
-        android:layout_below="@id/noExpenses"
+        android:visibility="gone"
         app:srcCompat="@drawable/receipt"
-        tools:ignore="ImageContrastCheck"
-        android:visibility="gone"/>
+        tools:ignore="ImageContrastCheck" />
 
+    <!-- Floating action button - FAB-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/addExpenseFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -53,10 +58,10 @@
         android:contentDescription="@string/add_expense"
         android:focusable="true"
         android:tint="@android:color/white"
+        android:tooltipText="@string/add_expense"
         app:srcCompat="@drawable/add"
         app:tint="@android:color/white"
-        android:tooltipText="@string/add_expense"/>
-
+        tools:ignore="UnusedAttribute" />
 
 </RelativeLayout>
 
