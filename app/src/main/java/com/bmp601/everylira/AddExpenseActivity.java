@@ -311,6 +311,8 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     @NonNull
     static String getFormattedPrice(String enteredExpensePrice) {
+        if (enteredExpensePrice == null)
+            return "0.00";
         enteredExpensePrice = enteredExpensePrice.replace(",","");
 
         return String.format(new Locale("en", "US"), "%,.2f", Double.parseDouble(enteredExpensePrice));
