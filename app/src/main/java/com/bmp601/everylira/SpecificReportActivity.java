@@ -123,9 +123,9 @@ public class SpecificReportActivity extends AppCompatActivity {
 
                     // If no expenses found, set the total cost value to zero
                     if (c1.getString(c1.getColumnIndexOrThrow("Total")) == null)
-                        totalCostValue.setText("0");
+                        totalCostValue.setText(AddExpenseActivity.getFormattedPrice("0"));
                     else
-                        totalCostValue.setText(c1.getString(c1.getColumnIndexOrThrow("Total")));
+                        totalCostValue.setText(AddExpenseActivity.getFormattedPrice(c1.getString(c1.getColumnIndexOrThrow("Total"))));
 
                     c1.close();
 
@@ -186,9 +186,9 @@ public class SpecificReportActivity extends AppCompatActivity {
                     c1.moveToFirst();
 
                     if (c1.getString(c1.getColumnIndexOrThrow("Total")) == null)
-                        totalCostValue.setText("0");
+                        totalCostValue.setText(AddExpenseActivity.getFormattedPrice("0"));
                     else
-                        totalCostValue.setText(c1.getString(c1.getColumnIndexOrThrow("Total")));
+                        totalCostValue.setText(AddExpenseActivity.getFormattedPrice(c1.getString(c1.getColumnIndexOrThrow("Total"))));
 
                     c1.close();
 
@@ -267,9 +267,9 @@ public class SpecificReportActivity extends AppCompatActivity {
                     c1.moveToFirst();
 
                     if (c1.getString(c1.getColumnIndexOrThrow("Total")) == null)
-                        totalCostValue.setText("0");
+                        totalCostValue.setText(AddExpenseActivity.getFormattedPrice("0"));
                     else
-                        totalCostValue.setText(c1.getString(c1.getColumnIndexOrThrow("Total")));
+                        totalCostValue.setText(AddExpenseActivity.getFormattedPrice(c1.getString(c1.getColumnIndexOrThrow("Total"))));
 
                     c1.close();
 
@@ -301,7 +301,7 @@ public class SpecificReportActivity extends AppCompatActivity {
             // First, we need to make a query on the sum of expenses of all purchased items (items with price more than zero)
             Cursor c1 = getContentResolver().query(ExpensesContentProvider.EXPENSES_PAID_COST_URI, null, null, null, null);
             c1.moveToFirst();
-            totalCostValue.setText(c1.getString(c1.getColumnIndexOrThrow("Total")));
+            totalCostValue.setText(AddExpenseActivity.getFormattedPrice(c1.getString(c1.getColumnIndexOrThrow("Total"))));
 
             c1.close();
 
@@ -327,7 +327,7 @@ public class SpecificReportActivity extends AppCompatActivity {
             // First, we need to make a query on the sum of expenses that are services
             Cursor c1 = getContentResolver().query(ExpensesContentProvider.EXPENSES_SERVICES_COST_URI, null, null, null, null);
             c1.moveToFirst();
-            totalCostValue.setText(c1.getString(c1.getColumnIndexOrThrow("Total")));
+            totalCostValue.setText(AddExpenseActivity.getFormattedPrice(c1.getString(c1.getColumnIndexOrThrow("Total"))));
 
             c1.close();
 

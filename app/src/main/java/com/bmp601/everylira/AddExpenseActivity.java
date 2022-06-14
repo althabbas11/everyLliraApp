@@ -197,12 +197,14 @@ public class AddExpenseActivity extends AppCompatActivity {
                 String enteredItemName = itemName.getText().toString();
                 boolean enteredIsService = isService.isChecked();
                 String enteredItemDescription = itemDescription.getText().toString();
-                double enteredExpensePrice;
+                String enteredExpensePrice;
 
                 if (itemPrice.getText().toString().isEmpty())
-                    enteredExpensePrice = 0;
+                    enteredExpensePrice = "0";
                 else
-                    enteredExpensePrice = Double.parseDouble(itemPrice.getText().toString());
+                    enteredExpensePrice = (itemPrice.getText().toString());
+
+                String formattedExpense = getFormattedPrice(enteredExpensePrice);
 
                 String enteredCategoryName = categoriesSpinner.getSelectedItem().toString();
                 String enteredExpenseDate = purchaseDate.getText().toString();
@@ -247,7 +249,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                     ContentValues expenseValues = new ContentValues();
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_ITEM_ID, newItemID);
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_CATEGORY_ID, categoryId);
-                    expenseValues.put(ExpensesDB.EXPENSES_KEY_PRICE, enteredExpensePrice);
+                    expenseValues.put(ExpensesDB.EXPENSES_KEY_PRICE, formattedExpense);
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_DATE, enteredExpenseDate);
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_DESCRIPTION, enteredExpenseDescription);
 
@@ -283,7 +285,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                     ContentValues expenseValues = new ContentValues();
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_ITEM_ID, itemId);
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_CATEGORY_ID, enteredCategoryName.equalsIgnoreCase("none") ? 0 : c.getInt(0));
-                    expenseValues.put(ExpensesDB.EXPENSES_KEY_PRICE, enteredExpensePrice);
+                    expenseValues.put(ExpensesDB.EXPENSES_KEY_PRICE, getFormattedPrice(enteredExpensePrice));
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_DATE, enteredExpenseDate);
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_DESCRIPTION, enteredExpenseDescription);
 
@@ -305,6 +307,13 @@ public class AddExpenseActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @NonNull
+    static String getFormattedPrice(String enteredExpensePrice) {
+        enteredExpensePrice = enteredExpensePrice.replace(",","");
+
+        return String.format(new Locale("en", "US"), "%,.2f", Double.parseDouble(enteredExpensePrice));
     }
 
     // Based on the rowId (the expense ID) get all info from the needed content providers

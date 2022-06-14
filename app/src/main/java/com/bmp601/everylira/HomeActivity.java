@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,7 +73,6 @@ public class HomeActivity extends AppCompatActivity implements
         });
     }
 
-    // TODO: Elaborate more
     @Override
     protected void onResume() {
         super.onResume();
@@ -108,6 +108,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         // Assign adapter to ListView
         expensesList.setAdapter(dataAdapter);
+
         //Ensures a loader is initialized and active.
         getLoaderManager().initLoader(0, null, this);
 
@@ -138,8 +139,7 @@ public class HomeActivity extends AppCompatActivity implements
         });
     }
 
-    // TODO: Elaborate more
-    // This is called when a new Loader needs to be created.
+    // This is called when a new Loader needs to be created (after any re-opening the activity)
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {
@@ -157,12 +157,9 @@ public class HomeActivity extends AppCompatActivity implements
         return cursorLoader;
     }
 
-    // TODO: Elaborate more
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        // Swap the new cursor in.  (The framework will take care of closing the
-        // old cursor once we return.)
-
+        // Swap the new cursor in.
         // If the cursor has no records, show the noExpenses textView and imageView
         // Otherwise, hide them
         if (data.getCount() == 0) {
@@ -176,12 +173,10 @@ public class HomeActivity extends AppCompatActivity implements
         dataAdapter.swapCursor(data);
     }
 
-    // TODO: Elaborate more
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // This is called when the last Cursor provided to onLoadFinished()
-        // above is about to be closed.  We need to make sure we are no
-        // longer using it.
+        // This is called when the last Cursor provided to onLoadFinished() above is about to be closed
+        // We need to make sure we are no longer using it.
         dataAdapter.swapCursor(null);
     }
 
