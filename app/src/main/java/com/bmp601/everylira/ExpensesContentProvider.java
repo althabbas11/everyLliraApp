@@ -26,12 +26,10 @@ public class ExpensesContentProvider extends ContentProvider {
     private static final int ALL_EXPENSES_CATEGORY_REPORT = 12;
     private static final int ALL_EXPENSES_CATEGORY_TOTAL = 13;
 
-    // authority is the symbolic name of your provider
-    // To avoid conflicts with other providers, you should use
-    // Internet domain ownership (in reverse) as the basis of your provider authority.
+    // AUTHORITY is the symbolic name of the provider
     private static final String AUTHORITY = "com.bmp601.everyLiraContentProviderExpenses";
 
-    // create content URIs from the authority by appending path to database table
+    // Create content URIs from the authority by appending path to database table
     public static final Uri EXPENSES_URI =
             Uri.parse("content://" + AUTHORITY + "/expenses");
     public static final Uri EXPENSES_ITEMS_URI =
@@ -58,9 +56,7 @@ public class ExpensesContentProvider extends ContentProvider {
             Uri.parse("content://" + AUTHORITY + "/expensesCategoryTotal");
 
 
-
-
-    // a content URI pattern matches content URIs using wildcard characters:
+    // A content URI pattern matches content URIs using wildcard characters:
     // *: Matches a string of any valid characters of any length.
     // #: Matches a string of numeric characters of any length.
     private static final UriMatcher uriMatcher;
@@ -82,7 +78,7 @@ public class ExpensesContentProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, "expensesCategoryTotal", ALL_EXPENSES_CATEGORY_TOTAL);
     }
 
-    // system calls onCreate() when it starts up the provider.
+    // System calls onCreate() when it starts up the provider.
     @Override
     public boolean onCreate() {
         // get access to the database helper
@@ -90,7 +86,7 @@ public class ExpensesContentProvider extends ContentProvider {
         return false;
     }
 
-    //Return the MIME type corresponding to a content URI
+    // Return the MIME type corresponding to a content URI
     @Override
     public String getType(Uri uri) {
 
@@ -115,10 +111,8 @@ public class ExpensesContentProvider extends ContentProvider {
         }
     }
 
-    // The insert() method adds a new row to the appropriate table, using the values
-    // in the ContentValues argument. If a column name is not in the ContentValues argument,
-    // you may want to provide a default value for it either in your provider code or in
-    // your database schema.
+    // The insert() method adds a new row to the appropriate table,
+    // using the values in the ContentValues
     @Override
     public Uri insert(Uri uri, ContentValues values) {
 
@@ -135,12 +129,7 @@ public class ExpensesContentProvider extends ContentProvider {
         return Uri.parse(EXPENSES_URI + "/" + id);
     }
 
-    // The query() method must return a Cursor object, or if it fails,
-    // throw an Exception. If you are using an SQLite database as your data storage,
-    // you can simply return the Cursor returned by one of the query() methods of the
-    // SQLiteDatabase class. If the query does not match any rows, you should return a
-    // Cursor instance whose getCount() method returns 0. You should return null only
-    // if an internal error occurred during the query process.
+    // The query() method must return a Cursor object
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
@@ -149,57 +138,56 @@ public class ExpensesContentProvider extends ContentProvider {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(ExpensesDB.EXPENSES_TABLE);
         String query;
+        String selectColumns = "SELECT Expenses._id, " + ExpensesDB.EXPENSES_KEY_PRICE + ", " + ExpensesDB.EXPENSES_KEY_DATE + ", " + ExpensesDB.CATEGORIES_KEY_NAME + ", " + ExpensesDB.ITEMS_KEY_NAME;
         Cursor c;
         switch (uriMatcher.match(uri)) {
             case ALL_EXPENSES:
                 //do nothing
                 break;
             case ALL_EXPENSES_ITEMS:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id ORDER BY Expenses.date ASC";
+                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id ORDER BY " + ExpensesDB.EXPENSES_KEY_DATE + " ASC";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
             case ALL_EXPENSES_SERVICES_REPORT:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Items.isService = 1";
+                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Items.isService = 1";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
             case ALL_EXPENSES_SERVICES_COST:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name, SUM(Expenses.price) as Total FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Items.isService = 1";
+                query = selectColumns + ", SUM(Expenses.price) as Total FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Items.isService = 1";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
             case ALL_EXPENSES_PAID_REPORT:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.price != 0";
+                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.price != 0";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
             case ALL_EXPENSES_PAID_COST:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name, SUM(Expenses.price) as Total FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.price != 0";
+                query = selectColumns + ", SUM(Expenses.price) as Total FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.price != 0";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
             case ALL_EXPENSES_YEAR:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.date BETWEEN '" + selectionArgs[0] + "-01-01' AND '" + selectionArgs[0] + "-12-31'";
+                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.date BETWEEN '" + selectionArgs[0] + "-01-01' AND '" + selectionArgs[0] + "-12-31'";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
             case ALL_EXPENSES_YEAR_TOTAL:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name, SUM(Expenses.price) as Total FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.date BETWEEN '" + selectionArgs[0] + "-01-01' AND '" + selectionArgs[0] + "-12-31'";
+                query = selectColumns + ", SUM(Expenses.price) as Total FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.date BETWEEN '" + selectionArgs[0] + "-01-01' AND '" + selectionArgs[0] + "-12-31'";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
             case ALL_EXPENSES_MONTH:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.date BETWEEN '" + selectionArgs[0] + "-" + selectionArgs[1] + "-01' AND '" + selectionArgs[0] + "-" + selectionArgs[1] + "-31'";
+                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.date BETWEEN '" + selectionArgs[0] + "-" + selectionArgs[1] + "-01' AND '" + selectionArgs[0] + "-" + selectionArgs[1] + "-31'";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
             case ALL_EXPENSES_MONTH_TOTAL:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name, SUM(Expenses.price) as Total FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.date BETWEEN '" + selectionArgs[0] + "-" + selectionArgs[1] + "-01' AND '" + selectionArgs[0] + "-" + selectionArgs[1] + "-31'";
+                query = selectColumns + ", SUM(Expenses.price) as Total FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Expenses.date BETWEEN '" + selectionArgs[0] + "-" + selectionArgs[1] + "-01' AND '" + selectionArgs[0] + "-" + selectionArgs[1] + "-31'";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
             case ALL_EXPENSES_CATEGORY_REPORT:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Categories.categoryName = '" + selectionArgs[0]+ "'";
+                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Categories.categoryName = '" + selectionArgs[0] + "'";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
             case ALL_EXPENSES_CATEGORY_TOTAL:
-                query = "SELECT Expenses._id, Expenses.price, Expenses.date, Categories.categoryName, Items.name, SUM(Expenses.price) as Total FROM Expenses INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Categories.categoryName = '" + selectionArgs[0]+ "'";
+                query = selectColumns + ", SUM(Expenses.price) as Total FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN Items ON Expenses.itemId = Items._id INNER JOIN Categories ON Expenses.categoryId = Categories._id WHERE Categories.categoryName = '" + selectionArgs[0] + "'";
                 c = dbHelper.getWritableDatabase().rawQuery(query, null);
                 return c;
-
-
             case SINGLE_EXPENSE:
                 String id = uri.getPathSegments().get(1);
                 queryBuilder.appendWhere(ExpensesDB.EXPENSES_KEY_ID + "=" + id);
@@ -211,13 +199,9 @@ public class ExpensesContentProvider extends ContentProvider {
         Cursor cursor = queryBuilder.query(db, projection, selection,
                 selectionArgs, null, null, sortOrder);
         return cursor;
-
     }
 
-    // The delete() method deletes rows based on the seletion or if an id is
-    // provided then it deleted a single row. The methods returns the numbers
-    // of records delete from the database. If you choose not to delete the data
-    // physically then just update a flag here.
+    // The delete() method deletes rows based on the selection or if an id is provided
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
 
@@ -242,7 +226,7 @@ public class ExpensesContentProvider extends ContentProvider {
 
     // The update method() is same as delete() which updates multiple rows
     // based on the selection or a single row if the row id is provided. The
-    // update method returns the number of updated rows.
+    // update method returns the number of updated rows
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
