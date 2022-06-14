@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bmp601.everylira">
 
-    <permission  android:name="com.bmp601.READ_DATABASE" android:protectionLevel="normal"/>
-    <permission  android:name="com.bmp601.WRITE_DATABASE" android:protectionLevel="normal"/>
-<!--    <permission  android:name="com.bmp601.everyLiraContentProviderExpenses.READ_DATABASE" android:protectionLevel="normal"/>-->
+    <permission
+        android:name="com.bmp601.READ_DATABASE"
+        android:protectionLevel="normal" />
 
     <application
         android:allowBackup="true"
@@ -17,10 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EveryLira"
         tools:targetApi="31">
+
         <activity
             android:name=".SpecificReportActivity"
-            android:exported="true"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="true" />
         <activity
             android:name=".AboutActivity"
             android:exported="false"
@@ -68,34 +69,23 @@
             android:name=".UsersContentProvider"
             android:authorities="com.bmp601.everyLiraContentProviderUsers"
             android:enabled="true"
-            android:exported="true"
-            android:readPermission="com.bmp601.READ_DATABASE"
-            android:writePermission="com.bmp601.WRITE_DATABASE"
-            android:grantUriPermissions="true" />
+            android:exported="false" />
         <provider
             android:name=".CategoriesContentProvider"
             android:authorities="com.bmp601.everyLiraContentProviderCategories"
             android:enabled="true"
             android:exported="true"
-            android:multiprocess="true"
-            android:readPermission="com.bmp601.READ_DATABASE"
-            android:writePermission="com.bmp601.WRITE_DATABASE" />
+            android:readPermission="com.bmp601.READ_DATABASE" />
         <provider
             android:name=".ItemsContentProvider"
             android:authorities="com.bmp601.everyLiraContentProviderItems"
             android:enabled="true"
-            android:exported="true"
-            android:readPermission="com.bmp601.READ_DATABASE"
-            android:writePermission="com.bmp601.WRITE_DATABASE"
-            android:grantUriPermissions="true"/>
+            android:exported="false" />
         <provider
             android:name=".ExpensesContentProvider"
             android:authorities="com.bmp601.everyLiraContentProviderExpenses"
             android:enabled="true"
             android:exported="true"
-            android:readPermission="com.bmp601.READ_DATABASE"
-            android:writePermission="com.bmp601.WRITE_DATABASE"
-            android:grantUriPermissions="true"/>
+            android:readPermission="com.bmp601.READ_DATABASE" />
     </application>
-
 </manifest>

@@ -32,7 +32,6 @@ public class SpecificReportActivity extends AppCompatActivity {
     Button getReport;
     ListView expensesListView;
     SimpleCursorAdapter dataAdapter;
-    Cursor myCursor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

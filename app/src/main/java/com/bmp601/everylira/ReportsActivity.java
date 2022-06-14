@@ -92,5 +92,4 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
