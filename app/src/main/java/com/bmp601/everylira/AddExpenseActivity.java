@@ -208,13 +208,9 @@ public class AddExpenseActivity extends AppCompatActivity {
                 String enteredExpenseDate = purchaseDate.getText().toString();
                 String enteredExpenseDescription = purchaseDescription.getText().toString();
 
-                // Validating user inputs (itemName, itemCategory, and purchaseDate are required)
+                // Validating user inputs (itemName, and purchaseDate are required)
                 if (enteredItemName.trim().equalsIgnoreCase("")) {
                     Toast.makeText(getBaseContext(), "Please enter item name", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (categoriesSpinner.getSelectedItem().toString().trim().equalsIgnoreCase("")) {
-                    Toast.makeText(getBaseContext(), "Please choose a category", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (enteredExpenseDate.trim().equalsIgnoreCase("")) {
@@ -245,10 +241,12 @@ public class AddExpenseActivity extends AppCompatActivity {
                     Cursor c = getContentResolver().query(CategoriesContentProvider.CATEGORIES_URI, null, searchQuery, null, null);
                     c.moveToFirst();
 
+                    int categoryId = c.getCount() == 0 ? 0 : c.getInt(0);
+
                     // Filling expense inf
                     ContentValues expenseValues = new ContentValues();
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_ITEM_ID, newItemID);
-                    expenseValues.put(ExpensesDB.EXPENSES_KEY_CATEGORY_ID, c.getInt(0));
+                    expenseValues.put(ExpensesDB.EXPENSES_KEY_CATEGORY_ID, categoryId);
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_PRICE, enteredExpensePrice);
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_DATE, enteredExpenseDate);
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_DESCRIPTION, enteredExpenseDescription);
@@ -284,7 +282,7 @@ public class AddExpenseActivity extends AppCompatActivity {
 
                     ContentValues expenseValues = new ContentValues();
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_ITEM_ID, itemId);
-                    expenseValues.put(ExpensesDB.EXPENSES_KEY_CATEGORY_ID, c.getInt(0));
+                    expenseValues.put(ExpensesDB.EXPENSES_KEY_CATEGORY_ID, enteredCategoryName.equalsIgnoreCase("none") ? 0 : c.getInt(0));
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_PRICE, enteredExpensePrice);
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_DATE, enteredExpenseDate);
                     expenseValues.put(ExpensesDB.EXPENSES_KEY_DESCRIPTION, enteredExpenseDescription);
@@ -324,37 +322,37 @@ public class AddExpenseActivity extends AppCompatActivity {
             Cursor itemCursor = getContentResolver().query(ItemsContentProvider.ITEMS_URI, null, itemSearchQuery, null, null);
 
             int categoryId = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_CATEGORY_ID)));
+
             // Searching for the name of the category using the CategoriesContentProvider
             String categorySearchQuery = ExpensesDB.CATEGORIES_KEY_ID + " = '" + categoryId + "'";
             Cursor categoryCursor = getContentResolver().query(CategoriesContentProvider.CATEGORIES_URI, null, categorySearchQuery, null, null);
 
-            if (itemCursor != null && categoryCursor != null) {
-                itemCursor.moveToFirst();
-                categoryCursor.moveToFirst();
+            itemCursor.moveToFirst();
+            categoryCursor.moveToFirst();
 
-                // Filling EditText views with their values
-                itemName.setText(itemCursor.getString(itemCursor.getColumnIndexOrThrow(ExpensesDB.ITEMS_KEY_NAME)));
-                isService.setChecked(Integer.parseInt(itemCursor.getString(itemCursor.getColumnIndexOrThrow(ExpensesDB.ITEMS_KEY_IS_SERVICE))) == 1);
-                itemDescription.setText(itemCursor.getString(itemCursor.getColumnIndexOrThrow(ExpensesDB.ITEMS_KEY_DESCRIPTION)));
+            // Filling EditText views with their values
+            itemName.setText(itemCursor.getString(itemCursor.getColumnIndexOrThrow(ExpensesDB.ITEMS_KEY_NAME)));
+            isService.setChecked(Integer.parseInt(itemCursor.getString(itemCursor.getColumnIndexOrThrow(ExpensesDB.ITEMS_KEY_IS_SERVICE))) == 1);
+            itemDescription.setText(itemCursor.getString(itemCursor.getColumnIndexOrThrow(ExpensesDB.ITEMS_KEY_DESCRIPTION)));
 
-                String categoryName = categoryCursor.getString(categoryCursor.getColumnIndexOrThrow(ExpensesDB.CATEGORIES_KEY_NAME));
+            // Handling the non-categorized items
+            String categoryName = categoryId == 0 ? "None" : categoryCursor.getString(categoryCursor.getColumnIndexOrThrow(ExpensesDB.CATEGORIES_KEY_NAME));
 
-                // Update the spinner selected value
-                // https://stackoverflow.com/a/17370964/10756728
-                categoriesSpinner.post(new Runnable() {
-                    public void run() {
-                        // getIndex(Spinner, String) returns the position of a string in a spinner list
-                        categoriesSpinner.setSelection(getIndex(categoriesSpinner, categoryName));
-                    }
-                });
+            // Update the spinner selected value
+            // https://stackoverflow.com/a/17370964/10756728
+            categoriesSpinner.post(new Runnable() {
+                public void run() {
+                    // getIndex(Spinner, String) returns the position of a string in a spinner list
+                    categoriesSpinner.setSelection(getIndex(categoriesSpinner, categoryName));
+                }
+            });
 
-                itemPrice.setText(cursor.getString(cursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_PRICE)));
-                purchaseDate.setText(cursor.getString(cursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_DATE)));
-                purchaseDescription.setText(cursor.getString(cursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_DESCRIPTION)));
+            itemPrice.setText(cursor.getString(cursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_PRICE)));
+            purchaseDate.setText(cursor.getString(cursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_DATE)));
+            purchaseDescription.setText(cursor.getString(cursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_DESCRIPTION)));
 
-                itemCursor.close();
-                categoryCursor.close();
-            }
+            itemCursor.close();
+            categoryCursor.close();
         }
     }
 
@@ -380,6 +378,8 @@ public class AddExpenseActivity extends AppCompatActivity {
         Cursor c = getContentResolver().query(CategoriesContentProvider.CATEGORIES_URI, null, null, null, null);
         // Empty list to be filled with available categories
         List<String> categories = new ArrayList<String>();
+
+        categories.add("None");
 
         while (c.moveToNext()) {
             @SuppressLint("Range") String categoryName = c.getString(c.getColumnIndex(ExpensesDB.CATEGORIES_KEY_NAME));

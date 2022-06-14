@@ -72,6 +72,12 @@ public class AddCategoryActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Please enter category name", Toast.LENGTH_LONG).show();
                     return;
                 }
+                // Category name cannot be equal to none (letter cases ignored)
+                if (enteredCategoryName.trim().equalsIgnoreCase("None")) {
+                    Toast.makeText(getBaseContext(), "Category name cannot be \"None\"", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
 
                 ContentValues categoryValues = new ContentValues();
                 categoryValues.put(ExpensesDB.CATEGORIES_KEY_NAME, enteredCategoryName);
@@ -131,6 +137,25 @@ public class AddCategoryActivity extends AppCompatActivity {
                                 getContentResolver().delete(expenseURI, null, null);
 
                                 dialog.cancel();
+
+                                // Since this category is being deleted, all expenses with this category will have the category "None"
+                                String searchString = ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = " + categoryId;
+                                Cursor expensesCursor = getContentResolver().query(ExpensesContentProvider.EXPENSES_URI, null, searchString, null, null);
+
+                                while (expensesCursor.moveToNext()) {
+                                    ContentValues expenseValues = new ContentValues();
+                                    expenseValues.put(ExpensesDB.EXPENSES_KEY_ITEM_ID, expensesCursor.getString(expensesCursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_ITEM_ID)));
+                                    // Update the expense category id to 0 (None)
+                                    expenseValues.put(ExpensesDB.EXPENSES_KEY_CATEGORY_ID, 0);
+                                    expenseValues.put(ExpensesDB.EXPENSES_KEY_PRICE, expensesCursor.getString(expensesCursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_PRICE)));
+                                    expenseValues.put(ExpensesDB.EXPENSES_KEY_DATE, expensesCursor.getString(expensesCursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_DATE)));
+                                    expenseValues.put(ExpensesDB.EXPENSES_KEY_DESCRIPTION, expensesCursor.getString(expensesCursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_DESCRIPTION)));
+
+                                    Uri expenseUri = Uri.parse(ExpensesContentProvider.EXPENSES_URI + "/" + expensesCursor.getString(expensesCursor.getColumnIndexOrThrow(ExpensesDB.EXPENSES_KEY_ID)));
+                                    getContentResolver().update(expenseUri, expenseValues, null, null);
+                                }
+
+                                expensesCursor.close();
 
                                 Toast.makeText(getApplicationContext(), R.string.category_deleted, Toast.LENGTH_LONG).show();
 

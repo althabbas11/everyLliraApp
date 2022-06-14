@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
+
+import java.util.Objects;
 
 public class ExpensesContentProvider extends ContentProvider {
     private MyDatabaseHelper dbHelper;
@@ -144,54 +147,78 @@ public class ExpensesContentProvider extends ContentProvider {
             case ALL_EXPENSES:
                 //do nothing
                 break;
-            case ALL_EXPENSES_ITEMS:
-                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id ORDER BY " + ExpensesDB.EXPENSES_KEY_DATE + " ASC";
-                c = dbHelper.getWritableDatabase().rawQuery(query, null);
-                return c;
-            case ALL_EXPENSES_SERVICES_REPORT:
-                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.ITEMS_KEY_IS_SERVICE + " = 1";
-                c = dbHelper.getWritableDatabase().rawQuery(query, null);
-                return c;
-            case ALL_EXPENSES_SERVICES_COST:
-                query = selectColumns + ", SUM(" + ExpensesDB.EXPENSES_KEY_PRICE + ") as Total FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.ITEMS_KEY_IS_SERVICE + " = 1";
-                c = dbHelper.getWritableDatabase().rawQuery(query, null);
-                return c;
-            case ALL_EXPENSES_PAID_REPORT:
-                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN "+ ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.EXPENSES_KEY_PRICE + " != 0";
-                c = dbHelper.getWritableDatabase().rawQuery(query, null);
-                return c;
-            case ALL_EXPENSES_PAID_COST:
-                query = selectColumns + ", SUM(" + ExpensesDB.EXPENSES_KEY_PRICE + ") as Total FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN "+ ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.EXPENSES_KEY_PRICE + " != 0";
-                c = dbHelper.getWritableDatabase().rawQuery(query, null);
-                return c;
-            case ALL_EXPENSES_YEAR:
-                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN "+ ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.EXPENSES_KEY_DATE + " BETWEEN '" + selectionArgs[0] + "-01-01' AND '" + selectionArgs[0] + "-12-31'";
-                c = dbHelper.getWritableDatabase().rawQuery(query, null);
-                return c;
-            case ALL_EXPENSES_YEAR_TOTAL:
-                query = selectColumns + ", SUM(" + ExpensesDB.EXPENSES_KEY_PRICE + ") as Total FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN "+ ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.EXPENSES_KEY_DATE + " BETWEEN '" + selectionArgs[0] + "-01-01' AND '" + selectionArgs[0] + "-12-31'";
-                c = dbHelper.getWritableDatabase().rawQuery(query, null);
-                return c;
-            case ALL_EXPENSES_MONTH:
-                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.EXPENSES_KEY_DATE + " BETWEEN '" + selectionArgs[0] + "-" + selectionArgs[1] + "-01' AND '" + selectionArgs[0] + "-" + selectionArgs[1] + "-31'";
-                c = dbHelper.getWritableDatabase().rawQuery(query, null);
-                return c;
-            case ALL_EXPENSES_MONTH_TOTAL:
-                query = selectColumns + ", SUM(" + ExpensesDB.EXPENSES_KEY_PRICE + ") as Total FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN "+ ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.EXPENSES_KEY_DATE + " BETWEEN '" + selectionArgs[0] + "-" + selectionArgs[1] + "-01' AND '" + selectionArgs[0] + "-" + selectionArgs[1] + "-31'";
-                c = dbHelper.getWritableDatabase().rawQuery(query, null);
-                return c;
-            case ALL_EXPENSES_CATEGORY_REPORT:
-                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN "+ ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.CATEGORIES_KEY_NAME + " = '" + selectionArgs[0] + "'";
-                c = dbHelper.getWritableDatabase().rawQuery(query, null);
-                return c;
-            case ALL_EXPENSES_CATEGORY_TOTAL:
-                query = selectColumns + ", SUM(" + ExpensesDB.EXPENSES_KEY_PRICE + ") as Total FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.CATEGORIES_KEY_NAME + " = '" + selectionArgs[0] + "'";
-                c = dbHelper.getWritableDatabase().rawQuery(query, null);
-                return c;
             case SINGLE_EXPENSE:
                 String id = uri.getPathSegments().get(1);
                 queryBuilder.appendWhere(ExpensesDB.EXPENSES_KEY_ID + "=" + id);
                 break;
+
+            case ALL_EXPENSES_ITEMS:
+                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id UNION ALL SELECT Expenses._id, " + ExpensesDB.EXPENSES_KEY_PRICE + ", " + ExpensesDB.EXPENSES_KEY_DATE + ", \"None\" AS categoryName, " + ExpensesDB.ITEMS_KEY_NAME + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id WHERE " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = 0 ORDER BY " + ExpensesDB.EXPENSES_KEY_DATE + " DESC";
+                c = dbHelper.getWritableDatabase().rawQuery(query, null);
+                return c;
+
+            // Expenses of a year
+            case ALL_EXPENSES_YEAR:
+                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.EXPENSES_KEY_DATE + " BETWEEN '" + selectionArgs[0] + "-01-01' AND '" + selectionArgs[0] + "-12-31' " +
+                        "UNION ALL SELECT Expenses._id, " + ExpensesDB.EXPENSES_KEY_PRICE + ", " + ExpensesDB.EXPENSES_KEY_DATE + ", \"None\" AS " + ExpensesDB.CATEGORIES_KEY_NAME + ", " + ExpensesDB.ITEMS_KEY_NAME + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id WHERE " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = 0 AND " + ExpensesDB.EXPENSES_KEY_DATE + " BETWEEN '" + selectionArgs[0] + "-01-01' AND '" + selectionArgs[0] + "-12-31' ORDER BY " + ExpensesDB.EXPENSES_KEY_DATE + " DESC";
+                Log.w("Query", query);
+                c = dbHelper.getWritableDatabase().rawQuery(query, null);
+                return c;
+            // Total expenses of a year
+            case ALL_EXPENSES_YEAR_TOTAL:
+                query = "SELECT Expenses._id, SUM(" + ExpensesDB.EXPENSES_KEY_PRICE + ") as Total FROM " + ExpensesDB.EXPENSES_TABLE + " WHERE " + ExpensesDB.EXPENSES_KEY_DATE + " BETWEEN '" + selectionArgs[0] + "-01-01' AND '" + selectionArgs[0] + "-12-31'";
+                c = dbHelper.getWritableDatabase().rawQuery(query, null);
+                return c;
+
+            // Expenses of a month
+            case ALL_EXPENSES_MONTH:
+                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.EXPENSES_KEY_DATE + " BETWEEN '" + selectionArgs[0] + "-" + selectionArgs[1] + "-01' AND '" + selectionArgs[0] + "-" + selectionArgs[1] + "-31' " +
+                        "UNION ALL SELECT Expenses._id, " + ExpensesDB.EXPENSES_KEY_PRICE + ", " + ExpensesDB.EXPENSES_KEY_DATE + ", \"None\" AS " + ExpensesDB.CATEGORIES_KEY_NAME + ", " + ExpensesDB.ITEMS_KEY_NAME + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id WHERE " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = 0 AND " + ExpensesDB.EXPENSES_KEY_DATE + " BETWEEN '" + selectionArgs[0] + "-" + selectionArgs[1] + "-01' AND '" + selectionArgs[0] + "-" + selectionArgs[1] + "-31' ORDER BY " + ExpensesDB.EXPENSES_KEY_DATE + " DESC";
+                c = dbHelper.getWritableDatabase().rawQuery(query, null);
+                return c;
+            // Total expenses of a month
+            case ALL_EXPENSES_MONTH_TOTAL:
+                query = "SELECT Expenses._id, SUM(" + ExpensesDB.EXPENSES_KEY_PRICE + ") as Total FROM " + ExpensesDB.EXPENSES_TABLE + " WHERE " + ExpensesDB.EXPENSES_KEY_DATE + " BETWEEN '" + selectionArgs[0] + "-" + selectionArgs[1] + "-01' AND '" + selectionArgs[0] + "-" + selectionArgs[1] + "-31'";
+                c = dbHelper.getWritableDatabase().rawQuery(query, null);
+                return c;
+
+            // Expenses of a category
+            case ALL_EXPENSES_CATEGORY_REPORT:
+                if (Objects.equals(selectionArgs[0], "0"))
+                    query = "SELECT Expenses._id, " + ExpensesDB.EXPENSES_KEY_PRICE + ", " + ExpensesDB.EXPENSES_KEY_DATE + ", \"None\" as " + ExpensesDB.CATEGORIES_KEY_NAME + ", " + ExpensesDB.ITEMS_KEY_NAME + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id WHERE " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = '0' ORDER BY " + ExpensesDB.EXPENSES_KEY_DATE + " DESC";
+                else
+                    query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = '" + selectionArgs[0] + "' ORDER BY " + ExpensesDB.EXPENSES_KEY_DATE + " DESC";
+                c = dbHelper.getWritableDatabase().rawQuery(query, null);
+                return c;
+            // Total expenses of a category
+            case ALL_EXPENSES_CATEGORY_TOTAL:
+                query = "SELECT Expenses._id, SUM(" + ExpensesDB.EXPENSES_KEY_PRICE + ") as Total FROM " + ExpensesDB.EXPENSES_TABLE + " WHERE " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = " + selectionArgs[0];
+                Log.w("Query", query);
+                c = dbHelper.getWritableDatabase().rawQuery(query, null);
+                return c;
+
+            // Services expenses
+            case ALL_EXPENSES_SERVICES_REPORT:
+                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.ITEMS_KEY_IS_SERVICE + " = 1 UNION ALL SELECT Expenses._id, " + ExpensesDB.EXPENSES_KEY_PRICE + ", " + ExpensesDB.EXPENSES_KEY_DATE + ", \"None\" AS categoryName, " + ExpensesDB.ITEMS_KEY_NAME + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id WHERE " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = 0 AND " + ExpensesDB.ITEMS_KEY_IS_SERVICE + " = 1";
+                c = dbHelper.getWritableDatabase().rawQuery(query, null);
+                return c;
+            // Services total cost
+            case ALL_EXPENSES_SERVICES_COST:
+                query = "SELECT Expenses._id, SUM(" + ExpensesDB.EXPENSES_KEY_PRICE + ") as Total FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id WHERE " + ExpensesDB.ITEMS_KEY_IS_SERVICE + " = 1";
+                c = dbHelper.getWritableDatabase().rawQuery(query, null);
+                return c;
+
+            // Purchased items expenses
+            case ALL_EXPENSES_PAID_REPORT:
+                query = selectColumns + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id INNER JOIN " + ExpensesDB.CATEGORIES_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = Categories._id WHERE " + ExpensesDB.EXPENSES_KEY_PRICE + " != 0 UNION ALL SELECT Expenses._id, " + ExpensesDB.EXPENSES_KEY_PRICE + ", " + ExpensesDB.EXPENSES_KEY_DATE + ", \"None\" AS " + ExpensesDB.CATEGORIES_KEY_NAME + ", " + ExpensesDB.ITEMS_KEY_NAME + " FROM " + ExpensesDB.EXPENSES_TABLE + " INNER JOIN " + ExpensesDB.ITEMS_TABLE + " ON " + ExpensesDB.EXPENSES_KEY_ITEM_ID + " = Items._id WHERE " + ExpensesDB.EXPENSES_KEY_PRICE + " != 0 AND " + ExpensesDB.EXPENSES_KEY_CATEGORY_ID + " = 0 ORDER BY date DESC";
+                Log.w("Query", query);
+                c = dbHelper.getWritableDatabase().rawQuery(query, null);
+                return c;
+            // Purchased items total cost
+            case ALL_EXPENSES_PAID_COST:
+                query = "SELECT Expenses._id, SUM(" + ExpensesDB.EXPENSES_KEY_PRICE + ") as Total FROM " + ExpensesDB.EXPENSES_TABLE + " WHERE " + ExpensesDB.EXPENSES_KEY_PRICE + " != 0";
+                c = dbHelper.getWritableDatabase().rawQuery(query, null);
+                return c;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }

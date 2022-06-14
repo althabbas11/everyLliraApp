@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -29,6 +31,8 @@ public class SpecificReportActivity extends AppCompatActivity {
     Spinner yearsSpinner, monthsSpinner;
     Button getReport;
     ListView expensesListView;
+    SimpleCursorAdapter dataAdapter;
+    Cursor myCursor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -138,7 +142,7 @@ public class SpecificReportActivity extends AppCompatActivity {
                         noExpenses.setVisibility(View.GONE);
 
                     // Create a SimpleCursorAdapter to show the selected columns within expense_info.xml
-                    SimpleCursorAdapter dataAdapter;
+
                     dataAdapter = new SimpleCursorAdapter(SpecificReportActivity.this, R.layout.expense_info, c2, from, to, 0);
 
                     expensesListView.setAdapter(dataAdapter);
@@ -198,7 +202,6 @@ public class SpecificReportActivity extends AppCompatActivity {
                     } else
                         noExpenses.setVisibility(View.GONE);
 
-                    SimpleCursorAdapter dataAdapter;
                     dataAdapter = new SimpleCursorAdapter(SpecificReportActivity.this, R.layout.expense_info, c2, from, to, 0);
 
                     expensesListView.setAdapter(dataAdapter);
@@ -226,11 +229,20 @@ public class SpecificReportActivity extends AppCompatActivity {
 
             // A list of all available categories, using the CategoriesContentProvider
             ArrayList<String> categoriesList = new ArrayList<String>();
+
+            // A map of all available categories (categoryName, categoryID), using the CategoriesContentProvider
+            Map<String, Integer> categoriesMap = new HashMap<String, Integer>();
+
             Cursor categoriesCursor = getContentResolver().query(CategoriesContentProvider.CATEGORIES_URI, null, null, null, null);
 
+            categoriesList.add("None");
+            categoriesMap.put("None", 0);
+
             while (categoriesCursor.moveToNext()) {
-                String currentCategory = categoriesCursor.getString(categoriesCursor.getColumnIndexOrThrow("categoryName"));
-                categoriesList.add(currentCategory);
+                int currentCategoryID = Integer.parseInt(categoriesCursor.getString(categoriesCursor.getColumnIndexOrThrow("_id")));
+                String currentCategoryName = categoriesCursor.getString(categoriesCursor.getColumnIndexOrThrow("categoryName"));
+                categoriesMap.put(currentCategoryName, currentCategoryID);
+                categoriesList.add(currentCategoryName);
             }
 
             categoriesCursor.close();
@@ -244,9 +256,11 @@ public class SpecificReportActivity extends AppCompatActivity {
             getReport.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String selectedCategory = yearsSpinner.getSelectedItem().toString();
+                    String selectedCategoryName = yearsSpinner.getSelectedItem().toString();
 
-                    String[] args = {selectedCategory};
+                    int selectedCategoryID = categoriesMap.get(selectedCategoryName);
+
+                    String[] args = {String.valueOf(selectedCategoryID)};
 
                     // First, we need to make a query on the sum of expenses of the selected category
                     // The selected category will be passed to the query
@@ -269,8 +283,6 @@ public class SpecificReportActivity extends AppCompatActivity {
                     } else
                         noExpenses.setVisibility(View.GONE);
 
-
-                    SimpleCursorAdapter dataAdapter;
                     dataAdapter = new SimpleCursorAdapter(SpecificReportActivity.this, R.layout.expense_info, c2, from, to, 0);
 
                     expensesListView.setAdapter(dataAdapter);
@@ -303,7 +315,6 @@ public class SpecificReportActivity extends AppCompatActivity {
             } else
                 noExpenses.setVisibility(View.GONE);
 
-            SimpleCursorAdapter dataAdapter;
             dataAdapter = new SimpleCursorAdapter(this, R.layout.expense_info, c2, from, to, 0);
 
             expensesListView.setAdapter(dataAdapter);
@@ -330,7 +341,6 @@ public class SpecificReportActivity extends AppCompatActivity {
             } else
                 noExpenses.setVisibility(View.GONE);
 
-            SimpleCursorAdapter dataAdapter;
             dataAdapter = new SimpleCursorAdapter(this, R.layout.expense_info, c2, from, to, 0);
 
             expensesListView.setAdapter(dataAdapter);

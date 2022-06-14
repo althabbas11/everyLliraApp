@@ -70,7 +70,6 @@ public class HomeActivity extends AppCompatActivity implements
                 startActivity(addExpense);
             }
         });
-
     }
 
     // TODO: Elaborate more
