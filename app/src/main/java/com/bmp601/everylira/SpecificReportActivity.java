@@ -317,6 +317,11 @@ public class SpecificReportActivity extends AppCompatActivity {
             dataAdapter = new SimpleCursorAdapter(this, R.layout.expense_info, c2, from, to, 0);
 
             expensesListView.setAdapter(dataAdapter);
+
+            totalCostValue.setVisibility(View.VISIBLE);
+            totalCostTextView.setVisibility(View.VISIBLE);
+            currency.setVisibility(View.VISIBLE);
+
         }
 
         if (kindOfReport.trim().equalsIgnoreCase("serviceReport")) {
@@ -343,6 +348,10 @@ public class SpecificReportActivity extends AppCompatActivity {
             dataAdapter = new SimpleCursorAdapter(this, R.layout.expense_info, c2, from, to, 0);
 
             expensesListView.setAdapter(dataAdapter);
+
+            totalCostValue.setVisibility(View.VISIBLE);
+            totalCostTextView.setVisibility(View.VISIBLE);
+            currency.setVisibility(View.VISIBLE);
         }
     }
 
