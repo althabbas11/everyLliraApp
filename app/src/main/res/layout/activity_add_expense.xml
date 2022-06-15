@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/chooseCategory"
             android:layout_marginTop="20dp"
-            android:autofillHints="password"
+            android:autofillHints="number"
             android:drawableStart="@drawable/price"
             android:drawablePadding="10dp"
             android:hint="@string/price"
