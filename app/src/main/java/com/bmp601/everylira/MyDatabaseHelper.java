@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 // The database helper
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
+    // Database name and version
     private static final String DATABASE_NAME = "ExpensesDB";
     private static final int DATABASE_VERSION = 1;
 
